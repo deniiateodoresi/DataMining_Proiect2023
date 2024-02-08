@@ -18,7 +18,7 @@ public class Lemmatizer {
         CoreDocument document = pipeline.processToCoreDocument(input);
         StringBuilder result = new StringBuilder();
         for (CoreLabel tok : document.tokens()) {
-            result.append(tok.lemma());
+            result.append(tok.lemma()).append(" ");
         }
         return result.toString();
     }

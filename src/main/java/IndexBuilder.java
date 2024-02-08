@@ -27,11 +27,13 @@ public class IndexBuilder {
         IndexWriter writer = new IndexWriter(index, new IndexWriterConfig(analyzer));
 
         for (int i = 1; i <= 80; i++) {
+            System.out.println("\nStarted to process file ---> " + i);
+
             String filePath = "wiki-subset/enwiki-20140602-pages-articles.xml-00";
             if (i < 10) {
-                filePath = filePath + "0" + i +".txt";
+                filePath = filePath + "0" + i + ".txt";
             } else {
-                filePath = filePath + i +".txt";
+                filePath = filePath + i + ".txt";
             }
 
             ClassLoader classLoader = IndexBuilder.class.getClassLoader();
@@ -60,6 +62,8 @@ public class IndexBuilder {
                 Document document = processArticle(article);
                 writer.addDocument(document);
             }
+
+            System.out.println("\nFinished processing file ---> " + i);
         }
 
         writer.commit();
