@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,9 +31,14 @@ public class SearchBuilder {
         IndexSearcher searcher = new IndexSearcher(directoryReader);
         QueryParser parser = new QueryParser("content", analyzer);
 
+        int nrQuestions = 0;
+        int defaultRank = directoryReader.numDocs();
+        List<Integer> ranks = new ArrayList<>();
+
         try (BufferedReader buffReader = new BufferedReader(new FileReader(QUESTIONS_PATH))) {
             String line;
             while ((line = buffReader.readLine()) != null) {
+                ++nrQuestions;
                 String category = line;
 
                 line = buffReader.readLine();
@@ -47,13 +53,21 @@ public class SearchBuilder {
 
                 List<String> processedAnswers = processAnswers(answer);
                 TopDocs results = query(parser, searcher, category.trim() + " " + clue, directoryReader.maxDoc());
-                checkRank(processedAnswers, searcher, results);
+
+                int currentRank = getRank(processedAnswers, searcher, results);
+                if (currentRank != -1) {
+                    ranks.add(currentRank);
+                } else {
+                    ranks.add(defaultRank);
+                }
 
                 System.out.println(">>> End of Query");
             }
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
+
+        computeMetrics(ranks, nrQuestions);
     }
 
     private static List<String> processAnswers(String answers) {
@@ -75,9 +89,9 @@ public class SearchBuilder {
         return searcher.search(query, docCount);
     }
 
-    private static void checkRank(List<String> answers, IndexSearcher searcher, TopDocs results) throws IOException {
+    private static Integer getRank(List<String> answers, IndexSearcher searcher, TopDocs results) throws IOException {
         int i = 1;
-        int rank;
+        int rank = -1;
         for (ScoreDoc scoreDoc : results.scoreDocs) {
             Document doc = searcher.doc(scoreDoc.doc);
 
@@ -90,5 +104,26 @@ public class SearchBuilder {
 
             i++;
         }
+        return rank;
+    }
+
+    private static void computeMetrics(List<Integer> ranks, int nrQuestions) {
+        double pAt1 = calculatePrecision(ranks, nrQuestions, 1);
+        double pAt5 = calculatePrecision(ranks, nrQuestions, 5);
+        double MRR = calculateMeanReciprocalRank(ranks, nrQuestions);
+
+        System.out.printf("Precision at 1: %f\n", pAt1);
+        System.out.printf("Precision at 5: %f\n", pAt5);
+        System.out.printf("Mean Reciprocal Rank: %f\n", MRR);
+    }
+
+    private static double calculatePrecision(List<Integer> ranks, int nrQuestions, int k) {
+        long nrCorrectItems = ranks.stream().filter(rank -> rank > 0 && rank <= k).count();
+        return (double) nrCorrectItems / nrQuestions;
+    }
+
+    private static double calculateMeanReciprocalRank(List<Integer> ranks, int nrQuestions) {
+        double sumMRR = ranks.stream().mapToDouble(rank -> 1.0 / rank).sum();
+        return sumMRR / nrQuestions;
     }
 }
