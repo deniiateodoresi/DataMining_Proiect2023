@@ -13,15 +13,15 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class SearchBuilder {
 
     private final static String INDEX_PATH = "src\\main\\resources\\wiki-index";
     private final static String QUESTIONS_PATH = "src\\main\\resources\\questions.txt";
+
+    private final static ChatGPTQuestionBuilder chatGPTQuestionBuilder = new ChatGPTQuestionBuilder();
 
     public static void main(String[] args) throws IOException {
         StandardAnalyzer analyzer = new StandardAnalyzer();
@@ -49,19 +49,19 @@ public class SearchBuilder {
 
                 line = buffReader.readLine();
 
-                System.out.println("\n>>> Query for: " + answer);
+//                System.out.println("\n>>> Query for: " + answer);
 
                 List<String> processedAnswers = processAnswers(answer);
                 TopDocs results = query(parser, searcher, category.trim() + " " + clue, directoryReader.maxDoc());
 
-                int currentRank = getRank(processedAnswers, searcher, results);
+                int currentRank = getRank(category, clue, processedAnswers, searcher, results, nrQuestions);
                 if (currentRank != -1) {
                     ranks.add(currentRank);
                 } else {
                     ranks.add(defaultRank);
                 }
 
-                System.out.println(">>> End of Query");
+//                System.out.println(">>> End of Query");
             }
         } catch (ParseException e) {
             throw new RuntimeException(e);
@@ -89,20 +89,29 @@ public class SearchBuilder {
         return searcher.search(query, docCount);
     }
 
-    private static Integer getRank(List<String> answers, IndexSearcher searcher, TopDocs results) throws IOException {
+    private static Integer getRank(String category, String clue, List<String> answers, IndexSearcher searcher, TopDocs results, int nrQuestions) throws IOException {
         int i = 1;
         int rank = -1;
+
+        Map<String, String> mapGPT = new HashMap<>();
         for (ScoreDoc scoreDoc : results.scoreDocs) {
             Document doc = searcher.doc(scoreDoc.doc);
 
             String title = doc.get("title");
+            String content = doc.get("content");
+            mapGPT.put(title, content);
+
             if (answers.contains(title.toLowerCase())) {
                 rank = i;
-                System.out.println(title + " ---> " + rank);
+//                System.out.println(title + " ---> " + rank);
                 break;
             }
 
             i++;
+        }
+
+        if (rank == 5) {
+            chatGPTQuestionBuilder.buildQuestion(category, clue, mapGPT, String.valueOf(nrQuestions));
         }
         return rank;
     }
