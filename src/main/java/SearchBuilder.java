@@ -11,17 +11,19 @@ import org.apache.lucene.store.FSDirectory;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class SearchBuilder {
 
     private final static String INDEX_PATH = "src\\main\\resources\\wiki-index";
     private final static String QUESTIONS_PATH = "src\\main\\resources\\questions.txt";
+    private final static String RANKS_PATH = "src\\main\\resources\\ranks.txt";
 
     private final static ChatGPTQuestionBuilder chatGPTQuestionBuilder = new ChatGPTQuestionBuilder();
+    private static FileWriter promptWriter;
 
     public static void main(String[] args) throws IOException {
         StandardAnalyzer analyzer = new StandardAnalyzer();
@@ -30,6 +32,8 @@ public class SearchBuilder {
 
         IndexSearcher searcher = new IndexSearcher(directoryReader);
         QueryParser parser = new QueryParser("content", analyzer);
+
+        promptWriter = new FileWriter(RANKS_PATH, true);
 
         int nrQuestions = 0;
         int defaultRank = directoryReader.numDocs();
@@ -49,9 +53,7 @@ public class SearchBuilder {
 
                 line = buffReader.readLine();
 
-//                System.out.println("\n>>> Query for: " + answer);
-
-                List<String> processedAnswers = processAnswers(answer);
+                List<String> processedAnswers = Utils.processAnswers(answer);
                 TopDocs results = query(parser, searcher, category.trim() + " " + clue, directoryReader.maxDoc());
 
                 int currentRank = getRank(category, clue, processedAnswers, searcher, results, nrQuestions);
@@ -60,27 +62,13 @@ public class SearchBuilder {
                 } else {
                     ranks.add(defaultRank);
                 }
-
-//                System.out.println(">>> End of Query");
             }
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
+        promptWriter.close();
 
-        computeMetrics(ranks, nrQuestions);
-    }
-
-    private static List<String> processAnswers(String answers) {
-        return Arrays.stream(answers.split("\\|"))
-                .map(String::toLowerCase)
-                .map(ans -> {
-                    try {
-                        return Utils.normalize(ans);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .collect(Collectors.toList());
+        MetricsHelper.computeMetrics(ranks, nrQuestions);
     }
 
     private static TopDocs query(QueryParser parser, IndexSearcher searcher, String clue, int docCount) throws IOException, ParseException {
@@ -103,36 +91,19 @@ public class SearchBuilder {
 
             if (answers.contains(title.toLowerCase())) {
                 rank = i;
-//                System.out.println(title + " ---> " + rank);
                 break;
             }
 
             i++;
         }
 
-        if (rank == 5) {
+        if (rank > 1 && rank <= 5) {
             chatGPTQuestionBuilder.buildQuestion(category, clue, mapGPT, String.valueOf(nrQuestions));
+            System.out.println("Question: " + nrQuestions + " Rank: " + rank);
         }
+
+        promptWriter.append(String.valueOf(nrQuestions)).append(":").append(String.valueOf(rank)).append("\n");
+
         return rank;
-    }
-
-    private static void computeMetrics(List<Integer> ranks, int nrQuestions) {
-        double pAt1 = calculatePrecision(ranks, nrQuestions, 1);
-        double pAt5 = calculatePrecision(ranks, nrQuestions, 5);
-        double MRR = calculateMeanReciprocalRank(ranks, nrQuestions);
-
-        System.out.printf("Precision at 1: %f\n", pAt1);
-        System.out.printf("Precision at 5: %f\n", pAt5);
-        System.out.printf("Mean Reciprocal Rank: %f\n", MRR);
-    }
-
-    private static double calculatePrecision(List<Integer> ranks, int nrQuestions, int k) {
-        long nrCorrectItems = ranks.stream().filter(rank -> rank > 0 && rank <= k).count();
-        return (double) nrCorrectItems / nrQuestions;
-    }
-
-    private static double calculateMeanReciprocalRank(List<Integer> ranks, int nrQuestions) {
-        double sumMRR = ranks.stream().mapToDouble(rank -> 1.0 / rank).sum();
-        return sumMRR / nrQuestions;
     }
 }

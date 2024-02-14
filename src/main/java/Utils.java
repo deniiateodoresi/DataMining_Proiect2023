@@ -6,6 +6,9 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Utils {
 
@@ -42,5 +45,18 @@ public class Utils {
                 .replace(",", "")
                 .replace(":", "")
                 .replace(";", "");
+    }
+
+    public static List<String> processAnswers(String answers) {
+        return Arrays.stream(answers.split("\\|"))
+                .map(String::toLowerCase)
+                .map(ans -> {
+                    try {
+                        return Utils.normalize(ans);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .collect(Collectors.toList());
     }
 }

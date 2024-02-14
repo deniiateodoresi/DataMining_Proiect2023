@@ -1,0 +1,120 @@
+>>>>> Prompt Question 7: 
+Given a clue and a list of articles that represent potential answers (the given document files), rank them, using the titles (file names), from best to worst answer for the given clue. Donot write any additional information, only the ranking for those 5 elements. 
+The clue is :This Italian painter depicted the "Adoration of the Golden Calf"
+The category is:"TIN" MEN
+>>>>>
+
+>>>>> Prompt Question 10: 
+Given a clue and a list of articles that represent potential answers (the given document files), rank them, using the titles (file names), from best to worst answer for the given clue. Donot write any additional information, only the ranking for those 5 elements. 
+The clue is :Several bridges, including El Tahrir, cross the Nile in this capital
+The category is:AFRICAN CITIES
+>>>>>
+
+>>>>> Prompt Question 18: 
+Given a clue and a list of articles that represent potential answers (the given document files), rank them, using the titles (file names), from best to worst answer for the given clue. Donot write any additional information, only the ranking for those 5 elements. 
+The clue is :In an essay defending this 2011 film, Myrlie Evers-Williams said, "My mother was" this film "& so was her mother"
+The category is:AFRICAN-AMERICAN WOMEN
+>>>>>
+
+>>>>> Prompt Question 30: 
+Given a clue and a list of articles that represent potential answers (the given document files), rank them, using the titles (file names), from best to worst answer for the given clue. Donot write any additional information, only the ranking for those 5 elements. 
+The clue is :France's Philip IV--known as "The Fair"--had Jacques De Molay, the last Grand Master of this order, burned in 1314
+The category is:I'M BURNIN' FOR YOU
+>>>>>
+
+>>>>> Prompt Question 39: 
+Given a clue and a list of articles that represent potential answers (the given document files), rank them, using the titles (file names), from best to worst answer for the given clue. Donot write any additional information, only the ranking for those 5 elements. 
+The clue is :When asked to describe herself, she says first & foremost, she is Malia & Sasha's mom
+The category is:AFRICAN-AMERICAN WOMEN
+>>>>>
+
+>>>>> Prompt Question 42: 
+Given a clue and a list of articles that represent potential answers (the given document files), rank them, using the titles (file names), from best to worst answer for the given clue. Donot write any additional information, only the ranking for those 5 elements. 
+The clue is :Milton Bradley games
+The category is:NAME THE PARENT COMPANY
+>>>>>
+
+>>>>> Prompt Question 45: 
+Given a clue and a list of articles that represent potential answers (the given document files), rank them, using the titles (file names), from best to worst answer for the given clue. Donot write any additional information, only the ranking for those 5 elements. 
+The clue is :In 2009: Sookie Stackhouse
+The category is:GOLDEN GLOBE WINNERS
+>>>>>
+
+>>>>> Prompt Question 48: 
+Given a clue and a list of articles that represent potential answers (the given document files), rank them, using the titles (file names), from best to worst answer for the given clue. Donot write any additional information, only the ranking for those 5 elements. 
+The clue is :For the brief time he attended, he was a rebel with a cause, even landing a lead role in a 1950 stage production
+The category is:UCLA CELEBRITY ALUMNI
+>>>>>
+
+>>>>> Prompt Question 49: 
+Given a clue and a list of articles that represent potential answers (the given document files), rank them, using the titles (file names), from best to worst answer for the given clue. Donot write any additional information, only the ranking for those 5 elements. 
+The clue is :Fisher-Price toys
+The category is:NAME THE PARENT COMPANY
+>>>>>
+
+>>>>> Prompt Question 51: 
+Given a clue and a list of articles that represent potential answers (the given document files), rank them, using the titles (file names), from best to worst answer for the given clue. Donot write any additional information, only the ranking for those 5 elements. 
+The clue is :One of his "Tales of a Wayside Inn" begins, "Listen, my children, and you shall hear of the midnight ride of Paul Revere"
+The category is:POETS & POETRY
+>>>>>
+
+>>>>> Prompt Question 54: 
+Given a clue and a list of articles that represent potential answers (the given document files), rank them, using the titles (file names), from best to worst answer for the given clue. Donot write any additional information, only the ranking for those 5 elements. 
+The clue is :This port is the southernmost of South Africa's 3 capitals
+The category is:AFRICAN CITIES
+>>>>>
+
+>>>>> Prompt Question 60: 
+Given a clue and a list of articles that represent potential answers (the given document files), rank them, using the titles (file names), from best to worst answer for the given clue. Donot write any additional information, only the ranking for those 5 elements. 
+The clue is :He earned the "fifth Beatle" nickname by producing all of the Beatles' albums
+The category is:"TIN" MEN
+>>>>>
+
+>>>>> Prompt Question 62: 
+Given a clue and a list of articles that represent potential answers (the given document files), rank them, using the titles (file names), from best to worst answer for the given clue. Donot write any additional information, only the ranking for those 5 elements. 
+The clue is :Large specimens of this marsupial can leap over barriers 6 feet high
+The category is:POTPOURRI
+>>>>>
+
+>>>>> Prompt Question 70: 
+Given a clue and a list of articles that represent potential answers (the given document files), rank them, using the titles (file names), from best to worst answer for the given clue. Donot write any additional information, only the ranking for those 5 elements. 
+The clue is :Pierre Cauchon, Bishop of Beauvais, presided over the trial of this woman who went up in smoke May 30, 1431
+The category is:I'M BURNIN' FOR YOU
+>>>>>
+
+>>>>> Prompt Question 73: 
+Given a clue and a list of articles that represent potential answers (the given document files), rank them, using the titles (file names), from best to worst answer for the given clue. Donot write any additional information, only the ranking for those 5 elements. 
+The clue is :Wooden 2-story verandas in this Liberian capital are an architectural link to the U.S. south
+The category is:AFRICAN CITIES
+>>>>>
+
+>>>>> Prompt Question 74: 
+Given a clue and a list of articles that represent potential answers (the given document files), rank them, using the titles (file names), from best to worst answer for the given clue. Donot write any additional information, only the ranking for those 5 elements. 
+The clue is :This New Orleans venue reopened Sept. 25, 2006
+The category is:COMPLETE DOM-INATION(Alex: Not "domination.")
+>>>>>
+
+>>>>> Prompt Question 75: 
+Given a clue and a list of articles that represent potential answers (the given document files), rank them, using the titles (file names), from best to worst answer for the given clue. Donot write any additional information, only the ranking for those 5 elements. 
+The clue is :"The Hunt for Red October"; he went more comedic as Jack Donaghy on "30 Rock"
+The category is:HE PLAYED A GUY NAMED JACK RYAN IN...
+>>>>>
+
+>>>>> Prompt Question 87: 
+Given a clue and a list of articles that represent potential answers (the given document files), rank them, using the titles (file names), from best to worst answer for the given clue. Donot write any additional information, only the ranking for those 5 elements. 
+The clue is :Crest toothpaste
+The category is:NAME THE PARENT COMPANY
+>>>>>
+
+>>>>> Prompt Question 90: 
+Given a clue and a list of articles that represent potential answers (the given document files), rank them, using the titles (file names), from best to worst answer for the given clue. Donot write any additional information, only the ranking for those 5 elements. 
+The clue is :Not to be confused with karma, krama is a popular accessory sold in cambodia; the word means "scarf" in this national language of Cambodia
+The category is:CAMBODIAN HISTORY & CULTURE
+>>>>>
+
+>>>>> Prompt Question 95: 
+Given a clue and a list of articles that represent potential answers (the given document files), rank them, using the titles (file names), from best to worst answer for the given clue. Donot write any additional information, only the ranking for those 5 elements. 
+The clue is :Don Knotts took over from Norman Fell as the resident landlord on this sitcom
+The category is:THE RESIDENTS
+>>>>>
+
