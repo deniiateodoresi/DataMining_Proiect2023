@@ -14,16 +14,19 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SearchBuilder {
 
     private final static String INDEX_PATH = "src\\main\\resources\\wiki-index";
     private final static String QUESTIONS_PATH = "src\\main\\resources\\questions.txt";
     private final static String RANKS_PATH = "src\\main\\resources\\ranks.txt";
+    private final static String INDEX_RESULTS_PATH = "index-results.txt";
 
     private final static ChatGPTQuestionBuilder chatGPTQuestionBuilder = new ChatGPTQuestionBuilder();
-    private static FileWriter promptWriter;
 
     public static void main(String[] args) throws IOException {
         StandardAnalyzer analyzer = new StandardAnalyzer();
@@ -33,7 +36,8 @@ public class SearchBuilder {
         IndexSearcher searcher = new IndexSearcher(directoryReader);
         QueryParser parser = new QueryParser("content", analyzer);
 
-        promptWriter = new FileWriter(RANKS_PATH, true);
+        FileWriter rankWriter = new FileWriter(RANKS_PATH, true);
+        FileWriter resultsWriter = new FileWriter(INDEX_RESULTS_PATH, true);
 
         int nrQuestions = 0;
         int defaultRank = directoryReader.numDocs();
@@ -59,14 +63,23 @@ public class SearchBuilder {
                 int currentRank = getRank(category, clue, processedAnswers, searcher, results, nrQuestions);
                 if (currentRank != -1) {
                     ranks.add(currentRank);
+                    resultsWriter.append(String.valueOf(nrQuestions)).append(":").append(clue).append("\n")
+                            .append("Obtained rank: ").append(String.valueOf(currentRank)).append("\n\n");
+
+                    rankWriter.append(String.valueOf(nrQuestions)).append(":").append(String.valueOf(currentRank)).append("\n");
                 } else {
                     ranks.add(defaultRank);
+                    resultsWriter.append(String.valueOf(nrQuestions)).append(":").append(clue).append("\n")
+                            .append("Obtained rank: ").append(String.valueOf(defaultRank)).append("\n\n");
+
+                    rankWriter.append(String.valueOf(nrQuestions)).append(":").append(String.valueOf(defaultRank)).append("\n");
                 }
             }
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-        promptWriter.close();
+        rankWriter.close();
+        resultsWriter.close();
 
         MetricsHelper.computeMetrics(ranks, nrQuestions);
     }
@@ -99,10 +112,7 @@ public class SearchBuilder {
 
         if (rank > 1 && rank <= 5) {
             chatGPTQuestionBuilder.buildQuestion(category, clue, mapGPT, String.valueOf(nrQuestions));
-            System.out.println("Question: " + nrQuestions + " Rank: " + rank);
         }
-
-        promptWriter.append(String.valueOf(nrQuestions)).append(":").append(String.valueOf(rank)).append("\n");
 
         return rank;
     }

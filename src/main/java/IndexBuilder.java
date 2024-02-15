@@ -43,6 +43,9 @@ public class IndexBuilder {
             data = data.replaceAll("\\[\\[File:.*]]]]", "");
             data = data.replaceAll("\\[\\[File:.*]]", "");
 
+            data = data.replaceAll("\\[\\[Image:.*]]]]", "");
+            data = data.replaceAll("\\[\\[Image:.*]]", "");
+
             List<String> fileContents = new ArrayList<>();
             Matcher matcher = Pattern.compile("\\[\\[.*]]").matcher(data);
             int start = 0;

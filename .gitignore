@@ -4,3 +4,4 @@ gradlew
 gradlew.bat
 settings.gradle
 build
+src/main/resources/wiki-index

@@ -21,11 +21,8 @@ public class Utils {
 
         StandardTokenizer tokenizer = new StandardTokenizer();
         tokenizer.setReader(new StringReader(input));
-
-        // Create a stop filter, using the English stop words set (more details in the documentation)
         TokenStream tokenStream = new StopFilter(tokenizer, EnglishAnalyzer.ENGLISH_STOP_WORDS_SET);
 
-        // Extract the tokens after stop words removal
         CharTermAttribute charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);
         tokenStream.reset();
 
